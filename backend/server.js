@@ -10,6 +10,7 @@ import jwt from 'jsonwebtoken'
 import authRoutes from './routes/auth.js'
 import messageRoutes from './routes/messages.js'
 import userRoutes from './routes/users.js'
+import DbConnect from './config/DbConnect.js'
 
 dotenv.config()
 
@@ -26,13 +27,7 @@ const io = new Server(server, {
 app.use(cors())
 app.use(express.json())
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chatapp', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err))
+
 
 // Routes
 app.use('/api/auth', authRoutes)
@@ -224,4 +219,7 @@ socket.on('send-message', async (messageData) => {
 const PORT = process.env.PORT || 5000
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
+  DbConnect().catch(err => {
+    console.error('Database connection error:', err)
+  })
 })
