@@ -110,3 +110,13 @@ router.post('/logout', auth, async (req, res) => {
 })
 
 export default router
+
+
+
+
+
+
+
+
+
+
